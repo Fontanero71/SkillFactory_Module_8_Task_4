@@ -76,7 +76,10 @@ namespace SkillFactory_Module_8_Task_4
                     for (int j = 0; j < mylist.Count; j++)
                     {
                         if (mylist[j] == newS[i].Group)
+                        {
                             k++;
+                            break;
+                        }
                     }
                     if (k == 0)                            //Сохраняю уникальные значения свойства "Group" в список
                         mylist.Add(newS[i].Group);
