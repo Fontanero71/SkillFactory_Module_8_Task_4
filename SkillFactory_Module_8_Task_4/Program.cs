@@ -13,8 +13,8 @@ namespace SkillFactory_Module_8_Task_4
         {
             public string Name { get; set; }
             public string Group { get; set; }
-            public string/*DateTime*/ DateTime { get; set; }
-            public Student(string name, string group, /*DateTime*/string dateTime)
+            public DateTime DateTime { get; set; }
+            public Student(string name, string group, DateTime dateTime)
             {
                 Name = name;
                 Group = group;
@@ -24,7 +24,7 @@ namespace SkillFactory_Module_8_Task_4
         }
         static void Main(string[] args)
         {
-            string createFile;
+            string createFile;                             //По надобности создаю рабочий бинарный файл
             Console.WriteLine(@"Создать файл 'Да/Нет' ");
             createFile = Console.ReadLine();
 
@@ -35,21 +35,20 @@ namespace SkillFactory_Module_8_Task_4
                 
                 for (int i = 0; i < 3; i++)
                 {
-                    oldS[i] = new Student("", "", "");
+                    oldS[i] = new Student("", "", DateTime.Now);
                     FillTheData(oldS[i]);
                 }
 
                 string dir = @"C:\Users\schek\Desktop\Students.dat";
-                FileStream fsin = new FileStream(dir, FileMode.Create, FileAccess.Write);
+                FileStream fsin = new FileStream(dir, FileMode.Create, FileAccess.Write); 
 
                 BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(fsin, oldS);
+                formatter.Serialize(fsin, oldS);                               //Запись в бинарный файл
 
                 fsin.Close(); 
             }
 
-                //if (!Directory.Exists(dir))
-                //    Directory.CreateDirectory(dir);
+                
             
 
             string path = @"C:\Users\schek\Desktop\Students.dat";
@@ -57,19 +56,18 @@ namespace SkillFactory_Module_8_Task_4
             
             BinaryFormatter formatterOut = new BinaryFormatter();
 
-            using (var fs = new FileStream(path, FileMode.OpenOrCreate))
+            using (var fs = new FileStream(path, FileMode.OpenOrCreate)) //Считываю из бинарного файла информацию
             {
                 Student[] newS = (Student[])formatterOut.Deserialize(fs);
-                foreach (var s in newS)
-                {
-                    Console.WriteLine(s.Name);
-                    Console.WriteLine(s.Group);
-                    Console.WriteLine(s.DateTime);
-                }
+                //foreach (var s in newS)
+                //{
+                //    Console.WriteLine(s.Name);
+                //    Console.WriteLine(s.Group);
+                //    Console.WriteLine(s.DateTime);
+                //}
 
-                //int length = newS.Length;
-
-                List <string> mylist = new List <string>();
+                
+                List <string> mylist = new List <string>(); //Определяю различные значения для свойства "Group"
                 mylist.Add(newS[0].Group);
 
                 for (int i = 1; i < newS.Length; i++)
@@ -80,18 +78,18 @@ namespace SkillFactory_Module_8_Task_4
                         if (mylist[j] == newS[i].Group)
                             k++;
                     }
-                    if (k == 0)
+                    if (k == 0)                            //Сохраняю уникальные значения свойства "Group" в список
                         mylist.Add(newS[i].Group);
                 }
 
-                string pathsorted = @"C:\Users\schek\Desktop\Students\";
+                string pathsorted = @"C:\Users\schek\Desktop\Students\"; //Создаю директорий "Students" на раб. столе при его отсутствии
 
                 if (!Directory.Exists(pathsorted))
                 {
                     Directory.CreateDirectory(pathsorted);
                 }
                 
-                for (int i = 0; i < mylist.Count; i++)
+                for (int i = 0; i < mylist.Count; i++)       //Для каждого уникального значения свойства "Group" создаем отдельный файл, и записываем туда информацию
                 {
                     StreamWriter subwr = File.CreateText(pathsorted + mylist[i] + ".dat");
                     for (int j = 0; j < newS.Length; j++)
@@ -118,7 +116,7 @@ namespace SkillFactory_Module_8_Task_4
             Console.WriteLine("Введите группу");
             InList.Group = Console.ReadLine();
             Console.WriteLine("Введите дату");
-            InList.DateTime = Console.ReadLine();
+            InList.DateTime = DateTime.Now;
 
         }
     }
